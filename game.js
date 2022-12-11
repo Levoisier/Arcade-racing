@@ -7,16 +7,30 @@ const btnUp = document.querySelector('#up');
 const btnLeft = document.querySelector('#left');
 const btnRight = document.querySelector('#right');
 const btnDown = document.querySelector('#down');
+let spanLives = document.querySelector('#lives')
+
+let flag = true;
+let level = 0;
+let lives = 3; 
 
 const playerPosition = {
     x: undefined,
     y: undefined,
 }
 
+const giftPosition = {
+    x: undefined,
+    y: undefined,
+}
+
+let firePosition = [];
+let deaths = [];
+
 window.addEventListener('load',setCanvasSize);
 window.addEventListener('resize',setCanvasSize);
 
 /* RENDER IMAGES */
+
 
 function setCanvasSize(){
     
@@ -38,12 +52,16 @@ function setCanvasSize(){
 
 function startGame() {
 
-    
+    showLives();
     game.font = elementsSize + 'px Verdana';
     game.textAlign = 'end';
 
+    const map = maps[level];
+    if(!map){
+        winner();
+        return;
+    }
 
-    const map = maps[2];
     const mapRows =  map.trim().split('\n');
     const mapRowCols = mapRows.map(row => row.trim().split(''));
 
@@ -59,21 +77,54 @@ function startGame() {
             playerPosition.x = posX;
             playerPosition.y = posY;
             }
-          }
+          } else if (col == 'I'){
+                giftPosition.x = posX;
+                giftPosition.y = posY;
+
+          } else if (col == 'X' && flag) {
+            firePosition.push({
+                x: posX,
+                y: posY,
+            });
+            }
+
           game.fillText(emoji, posX, posY);
+
         });
       });
-    /* for (let row = 1; row <= 10; row++) {
-        for (let col = 1; col <= 10; col++) {
-          game.fillText(emojis[mapRowCols[row - 1][col - 1]], elementsSize * col, elementsSize * row);
-        }
-      } */
-    movePlayer()
+    
+    movePlayer()    
+    flag = false;
+
     
 }
 
+
 function movePlayer(){
+    const giftCollisionX = playerPosition.x.toFixed(3) == giftPosition.x.toFixed(3);
+    const giftCollisionY = playerPosition.y.toFixed(3) == giftPosition.y.toFixed(3);
+    const giftCollision = giftCollisionX && giftCollisionY;
+
+    if(giftCollision){
+        levelWin();
+    }
+
+    const enemyCollision = firePosition.find(fire => {
+        const fireCollisionX = fire.x.toFixed(3) == playerPosition.x.toFixed(3);
+        const fireCollisionY = fire.y.toFixed(3) == playerPosition.y.toFixed(3);
+        return fireCollisionX && fireCollisionY;
+    });
+
+    if(enemyCollision){
+        deaths.push({
+            x: playerPosition.x.toFixed(3),
+            y: playerPosition.y.toFixed(3),
+        });
+        levelFail();
+    }
+
     game.fillText(emojis['PLAYER'],playerPosition.x,playerPosition.y);
+    
 }
 /* CONTROLS */
 
@@ -120,3 +171,46 @@ function moveByKey(event) {
     
 }
 
+function levelWin(){
+    flag = true;
+    firePosition.length = 0;
+    level++;
+    startGame();
+}
+function winner (){
+    alert('GG !!!')
+
+}
+
+function levelFail(){
+    lives--;
+    showLives();
+    
+
+    spanLives.innerHTML = emojis['HEART']
+
+    if (lives <= 0) {
+        level = 0;
+        lives = 3;
+        flag = true;
+        firePosition.length = 0;
+        startGame;
+    }
+    playerPosition.x = undefined;
+    playerPosition.y = undefined;
+    startGame();
+    
+
+}
+
+function showLives() {
+    spanLives.innerHTML = emojis['HEART'].repeat(lives)
+  }
+
+function deathsRender(){
+
+    for (let k = 0; k < 3; k++) {
+        game.fillText(emojis['GAME_OVER'],deaths[k].x,deaths[k].y)
+    }
+    
+}

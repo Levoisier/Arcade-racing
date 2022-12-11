@@ -9,9 +9,10 @@ const emojis = {
     'X': '🔥',
     'I': '🧀',
     'PLAYER': '🐀',
-    'BOMB_COLLISION': '💥',
+    'COLLISION': '💥',
     'GAME_OVER': '💩',
     'WIN': '🏆',
+    'HEART': '💛',
   };
   
   const maps = [];
