@@ -13,13 +13,16 @@ body {
     flex-wrap: wrap;
     height: 100vh;
     width: 100vw;
+    
+    
 
 }
 
 canvas {
-    border: 4px solid #1919A6;
+    border: 4px solid orange;
     border-radius: 8px;
     background-color: black;
+    
 }
 
 .btns {
@@ -35,9 +38,13 @@ button {
     border-radius: 8px;
     border-color: red;
     font-family: inherit;
-    margin: 0;
-    padding: 10px 20px; 
+    margin: 0px;
+    padding: 8px 15px; 
     width: 100px;
+    margin-top: 3px;
+    margin-right: 10px;
+    margin-left: 20px;
+    
 }
 
 button:not(:last-child) {
@@ -48,17 +55,41 @@ button:not(:last-child) {
     display: flex;
     flex-wrap: wrap;
     margin: 0 auto;
-    width: 80%;
-    max-width: 460px;
+    width: 100%;
+    max-width: 450px;
 }
 
 p {
     display: block;
     margin: 0;
     width: 100%;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 23px;
+}
+
+#gameover-screen {
+    width: 70%;
+    height: 20%; 
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    position: fixed;
+    background-image: radial-gradient(circle at 48.32% 54.62%, #ff8500 0, #ff760c 12.5%, #ff6212 25%, #fa4513 37.5%, #ed0c11 50%, #df0012 62.5%, #d50018 75%, #ce001f 87.5%, #c90028 100%);
+    margin: 0;
+    border-radius: 8px;
+    text-align: center;
+    
+}
+
+#gameoverButton {
+    width: 50%;
+    margin-bottom: 10px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: larger;
 }
 
 @media (max-width: 440px) {
-    button {margin-top: 25 px; }
+    button {margin-top: 10 px; }
     #up #down {margin-left: 100%; margin-right: 100%; }
+    button {padding: 10px;}
 }

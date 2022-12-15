@@ -1,4 +1,5 @@
 const canvas = document.querySelector('#game');
+const gameOverScreen= document.getElementById('gameover-screen');
 const game =  canvas.getContext('2d');
 let canvasSize;
 let elementsSize;
@@ -8,6 +9,9 @@ const btnLeft = document.querySelector('#left');
 const btnRight = document.querySelector('#right');
 const btnDown = document.querySelector('#down');
 let spanLives = document.querySelector('#lives')
+let spanTime = document.querySelector('#time')
+
+
 
 let flag = true;
 let level = 0;
@@ -36,15 +40,16 @@ function setCanvasSize(){
     
 
     if (window.innerHeight > window.innerWidth) {
-        canvasSize = window.innerWidth * 0.8;
+        canvasSize = window.innerWidth * 0.7;
     } else {
-        canvasSize = window.innerHeight * 0.8;
+        canvasSize = window.innerHeight * 0.7;
     }
 
-    canvas.setAttribute('width', canvasSize)
-    canvas.setAttribute('height', canvasSize)
+    canvas.setAttribute('width', canvasSize);
+    canvas.setAttribute('height', canvasSize);
 
-    elementsSize = canvasSize / 10;
+
+    elementsSize = canvasSize/10;
 
     startGame();
 
@@ -52,21 +57,34 @@ function setCanvasSize(){
 
 function startGame() {
 
-    showLives();
-    game.font = elementsSize + 'px Verdana';
-    game.textAlign = 'end';
+    if (lives <= 0) {
+        
+        gameOver()
+        
+    } else{
 
-    const map = maps[level];
-    if(!map){
+        
+
+        showLives();
+    
+        game.font = elementsSize + 'px Verdana';
+        game.textAlign = 'end';
+
+        const map = maps[level];
+        if(!map){
         winner();
         return;
-    }
+        }
 
-    const mapRows =  map.trim().split('\n');
-    const mapRowCols = mapRows.map(row => row.trim().split(''));
+        /* if(lives = 0){
+        gameOverScreen.style.display = "inline"; 
+        return;
+        } */
+        const mapRows =  map.trim().split('\n');
+        const mapRowCols = mapRows.map(row => row.trim().split(''));
 
-    game.clearRect(0, 0, canvasSize, canvasSize);
-    mapRowCols.forEach((row, rowI) => {
+        game.clearRect(0, 0, canvasSize, canvasSize);
+        mapRowCols.forEach((row, rowI) => {
         row.forEach((col, colI) => {
           const emoji = emojis[col];
           const posX = elementsSize * (colI + 1);
@@ -93,10 +111,11 @@ function startGame() {
         });
       });
     
-    movePlayer()    
-    flag = false;
+        movePlayer()    
+        flag = false;
+       
 
-    
+    }
 }
 
 
@@ -138,7 +157,11 @@ function moveUp(){
     if(playerPosition.y > elementsSize) {
         playerPosition.y -= elementsSize;
         startGame();
+        
     }
+   
+
+   
     
 }
 function moveLeft(){
@@ -183,34 +206,34 @@ function winner (){
 }
 
 function levelFail(){
-    lives--;
-    showLives();
-    
 
-    spanLives.innerHTML = emojis['HEART']
-
-    if (lives <= 0) {
-        level = 0;
-        lives = 3;
-        flag = true;
-        firePosition.length = 0;
-        startGame;
-    }
     playerPosition.x = undefined;
     playerPosition.y = undefined;
+    lives--;
+    showLives();
     startGame();
-    
-
 }
 
 function showLives() {
     spanLives.innerHTML = emojis['HEART'].repeat(lives)
   }
 
-function deathsRender(){
+function showTime(){
+    
+}
 
-    for (let k = 0; k < 3; k++) {
-        game.fillText(emojis['GAME_OVER'],deaths[k].x,deaths[k].y)
-    }
+function gameOver(){
+
+    document.getElementById('gameover-screen').style.display = 'inline';
+    
+}
+
+function gameReload(){
+    level = 0;
+    lives = 3;
+    flag = true;
+    firePosition.length = 0;
+    document.getElementById('gameover-screen').style.display = 'none';
+    startGame()
     
 }
