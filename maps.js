@@ -52,3 +52,27 @@ const emojis = {
     XX-----OXX
     XXXXXXXXXX
   `);
+  maps.push(`
+    XXXXXXXXOX
+    XXXXX-X--X
+    XXXXXX--XX
+    XX-XX--XXX
+    XXXX--XXXX
+    XXX--X-XXX
+    XX--XXXXXX
+    XX-XXXXXXX
+    XX-----IXX
+    XXXXXXXXXX
+  `);
+  maps.push(`
+    XXX------X
+    XXX-XXX-XX
+    XX--XXX-XX
+    XX-XX---XX
+    XXIX--XXXX
+    XXX----XXX
+    XXX-XXXXXX
+    XXX-XXXXXX
+    XXX----OXX
+    XXXXXXXXXX
+  `);

@@ -10,6 +10,8 @@ const btnRight = document.querySelector('#right');
 const btnDown = document.querySelector('#down');
 let spanLives = document.querySelector('#lives');
 let spanTime = document.querySelector('#time');
+let spanRecord = document.querySelector('#record');
+let pResult = document.querySelector('#result');
 
 
 
@@ -18,7 +20,7 @@ let level = 0;
 let lives = 3; 
 
 let timeStart;
-let timePlayer;
+let playerTime;
 let timeInterval;
 
 
@@ -87,6 +89,7 @@ function startGame() {
         if(!timeStart){
             timeStart = Date.now();
             timeInterval = setInterval(showTime, 100);
+            showRecord();
         }
         
 
@@ -219,6 +222,24 @@ function winner (){
     document.getElementById('record-win').innerHTML = formatTime(Date.now()-timeStart);
     document.getElementById('winner-screen').style.display = 'inline';
     clearInterval(timeInterval);
+
+    const playerTime = Date.now()-timeStart;
+    const recordTime = localStorage.getItem('record_time')
+
+    if(recordTime){
+        const playerTime = Date.now()-timeStart;
+        if(recordTime >= playerTime){
+            localStorage.setItem('record_time', playerTime);
+            console.log('record superado')
+        }else{
+            console.log('no superaste el record')
+        }
+    }else{
+        localStorage.setItem('record_time', playerTime)
+    }
+    console.log(recordTime,playerTime);
+
+    document.getElementById('record-final-win').innerHTML = formatTime(localStorage.getItem('record_time'));
     
 
 }
@@ -243,6 +264,7 @@ function showTime(){
 function gameOver(){
 
     document.getElementById('record-lose').innerHTML = formatTime(Date.now()-timeStart);
+    document.getElementById('record-final').innerHTML = formatTime(localStorage.getItem('record_time'));
     document.getElementById('gameover-screen').style.display = 'inline';
     clearInterval(timeInterval);
 
@@ -268,4 +290,8 @@ function formatTime(ms){
     const segStr = `${seg}`.padStart(2,"0")
     const minStr = `${min}`.padStart(2,"0")
     return`${minStr}:${segStr}:${csStr}`
+}
+
+function showRecord(){
+    spanRecord.innerHTML = formatTime(localStorage.getItem('record_time'));
 }
