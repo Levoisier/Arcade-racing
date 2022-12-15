@@ -8,14 +8,22 @@ const btnUp = document.querySelector('#up');
 const btnLeft = document.querySelector('#left');
 const btnRight = document.querySelector('#right');
 const btnDown = document.querySelector('#down');
-let spanLives = document.querySelector('#lives')
-let spanTime = document.querySelector('#time')
+let spanLives = document.querySelector('#lives');
+let spanTime = document.querySelector('#time');
 
 
 
 let flag = true;
 let level = 0;
 let lives = 3; 
+
+let timeStart;
+let timePlayer;
+let timeInterval;
+
+
+
+
 
 const playerPosition = {
     x: undefined,
@@ -63,7 +71,7 @@ function startGame() {
         
     } else{
 
-        
+    
 
         showLives();
     
@@ -75,6 +83,12 @@ function startGame() {
         winner();
         return;
         }
+
+        if(!timeStart){
+            timeStart = Date.now();
+            timeInterval = setInterval(showTime, 100);
+        }
+        
 
         /* if(lives = 0){
         gameOverScreen.style.display = "inline"; 
@@ -201,7 +215,11 @@ function levelWin(){
     startGame();
 }
 function winner (){
-    alert('GG !!!')
+
+    document.getElementById('record-win').innerHTML = formatTime(Date.now()-timeStart);
+    document.getElementById('winner-screen').style.display = 'inline';
+    clearInterval(timeInterval);
+    
 
 }
 
@@ -215,25 +233,39 @@ function levelFail(){
 }
 
 function showLives() {
-    spanLives.innerHTML = emojis['HEART'].repeat(lives)
+    spanLives.innerHTML = emojis['HEART'].repeat(lives);
   }
 
 function showTime(){
-    
+    spanTime.innerHTML = formatTime(Date.now()-timeStart);
 }
 
 function gameOver(){
 
+    document.getElementById('record-lose').innerHTML = formatTime(Date.now()-timeStart);
     document.getElementById('gameover-screen').style.display = 'inline';
-    
+    clearInterval(timeInterval);
+
 }
 
 function gameReload(){
     level = 0;
     lives = 3;
+    timeStart = undefined;
     flag = true;
     firePosition.length = 0;
     document.getElementById('gameover-screen').style.display = 'none';
+    document.getElementById('winner-screen').style.display = 'none';
     startGame()
     
+}
+
+function formatTime(ms){
+    const cs = parseInt(ms/10) % 100
+    const seg = parseInt(ms/1000) % 60
+    const min = parseInt(ms/60000) % 60
+    const csStr = `${cs}`.padStart(2,"0")
+    const segStr = `${seg}`.padStart(2,"0")
+    const minStr = `${min}`.padStart(2,"0")
+    return`${minStr}:${segStr}:${csStr}`
 }

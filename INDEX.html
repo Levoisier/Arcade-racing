@@ -24,14 +24,23 @@
 
         <div class="messages">
             <p> Hearts: <span id="lives"></span></p>
-            <p> Time: <span id="time"></span></p>
+            <p> Time:  <span id="time"></span></p>
         </div>
         <script src="maps.js"></script>
         <script src="game.js"></script>
     </div>
 
     <div id="gameover-screen" class="inactive" style="display: none;">
-        <h1>Game Over</h1>
+        <h1>💩 Game Over 💩</h1>
+        <h1>Time <span id="record-lose"></span></h1>
+        <h1>Record <span id="record"></span></h1>
+        <button id="gameoverButton" onclick="gameReload()">Try again</button>
+    </div>
+
+    <div id="winner-screen" class="inactive" style="display: none;">
+        <h1> 🏆 WINNER! 🏆 </h1>    
+        <h1>Time <span id="record-win"></span></h1>
+        <h1>Record <span id="record"></span></h1>
         <button id="gameoverButton" onclick="gameReload()">Try again</button>
     </div>
 </body>
